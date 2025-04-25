@@ -88,6 +88,7 @@ void setup() {
 
   digitalWrite(rojo, HIGH);
   digitalWrite(rojo2, HIGH);
+  delay(100);
   /*
   xTaskCreatePinnedToCore(
     tarea,         // Función que ejecuta la tarea
