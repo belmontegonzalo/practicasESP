@@ -1,9 +1,9 @@
-# practicasESP
+# Practicas ESP
 
 En este repositorio, el docente Luzko podra encontrar los ejercicios de Belmonte que estan
 orientados a la practica de uso del microcontrolador tipo ESP32.
 
-![alt text](imagenes/esp32img.png)
+![alt text](media/esp32img.png)
 
 RESUMEN EJERCICIOS Y CLASES:
  - Ejercicio 1: 23/04 | "Hola mundo estoy en core X"
