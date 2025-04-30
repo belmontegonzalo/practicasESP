@@ -27,5 +27,5 @@ Este ejercicio sincroniza dos semáforos y aprovecha los dos núcleos del ESP32 
 - El núcleo 1 maneja el semáforo B
 - Las tareas están sincronizadas para que cuando uno esté en rojo, el otro esté en verde, y viceversa
 
-![alt text](media/ejercicio3.gif)
+![Ejercicio 3](https://github.com/belmontegonzalo/practicasESP/blob/main/media/esp32img.png)
 
