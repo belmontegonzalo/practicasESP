@@ -1,7 +1,7 @@
 void tarea(void *parameter) {
   int core = xPortGetCoreID();  // Obtenemos el ID del core actual
 
-  Serial.print("HOLA LUZKO, ME ESTOY CORRIENDO EN EL CORE ");
+  Serial.print("Hola profe, estoy en el core ");
   Serial.println(core);
 
   while (1){

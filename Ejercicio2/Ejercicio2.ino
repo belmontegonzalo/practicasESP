@@ -1,8 +1,8 @@
-#define verde 14
-#define amarillo 12
-#define rojo 13
+#define verde 14       // LED verde del semáforo
+#define amarillo 12    // LED amarillo del semáforo
+#define rojo 13        // LED rojo del semáforo
 
-
+// Tarea que simula la secuencia de un semáforo
 void semaforo(void *parameter) {
   while (1) {
       digitalWrite(verde, LOW);
@@ -20,16 +20,18 @@ void semaforo(void *parameter) {
 }
 
 void setup() {
-  Serial.begin(115200);  // Inicializamos el puerto serie
-  delay(100);            // Esperamos un poco para que el Serial esté listo
+  Serial.begin(115200);  // Inicializa la comunicación serie
+  delay(100);            // Espera a que el puerto serie esté listo
 
+  // Configura los pines como salidas
   pinMode(verde, OUTPUT);
   pinMode(amarillo, OUTPUT);
   pinMode(rojo, OUTPUT);
 
-  digitalWrite(rojo, HIGH);
+  digitalWrite(rojo, HIGH);  // Comienza con luz roja encendida
   delay(100);
 
+  // Crea una tarea que se ejecuta en el core 0
   xTaskCreatePinnedToCore(
     semaforo,     // Función que ejecuta la tarea
     "Task_Core2",  // Nombre de la tarea

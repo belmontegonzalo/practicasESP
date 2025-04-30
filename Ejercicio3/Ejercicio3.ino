@@ -1,20 +1,17 @@
+#define verde 14       // LED verde del semáforo 1
+#define amarillo 12    // LED amarillo del semáforo 1
+#define rojo 13        // LED rojo del semáforo 1
 
-#define verde 14
-#define amarillo 12
-#define rojo 13
+#define verde2 4       // LED verde del semáforo 2
+#define amarillo2 2    // LED amarillo del semáforo 2
+#define rojo2 15       // LED rojo del semáforo 2
 
-#define verde2 4
-#define amarillo2 2
-#define rojo2 15
+SemaphoreHandle_t semaforo;  // Semáforo (mutex) para sincronizar las tareas
 
-
-SemaphoreHandle_t semaforo;
-
-
+// Tarea auxiliar que imprime el core en el que se está ejecutando
 void tarea(void *parameter) {
-  int core = xPortGetCoreID();  // Obtenemos el ID del core actual
-
-  Serial.print("HOLA LUZKO, ME ESTOY CORRIENDO EN EL CORE ");
+  int core = xPortGetCoreID();
+  Serial.print("Hola profe, estoy en el core ");
   Serial.println(core);
 
   while (1) {
@@ -22,6 +19,7 @@ void tarea(void *parameter) {
   }
 }
 
+// Controla la secuencia del semáforo 1 usando el semáforo para sincronizar
 void semaforo1(void *parameter) {
   while (1) {
     if (xSemaphoreTake(semaforo, portMAX_DELAY) == pdTRUE) {
@@ -30,7 +28,6 @@ void semaforo1(void *parameter) {
       vTaskDelay(pdMS_TO_TICKS(1000));
 
       digitalWrite(amarillo, LOW);
-
       digitalWrite(verde, HIGH);
       vTaskDelay(pdMS_TO_TICKS(4000));
 
@@ -46,6 +43,7 @@ void semaforo1(void *parameter) {
   }
 }
 
+// Controla la secuencia del semáforo 2 de forma sincronizada con semáforo1
 void semaforo2(void *parameter) {
   while (1) {
     if (xSemaphoreTake(semaforo, portMAX_DELAY) == pdTRUE) {
@@ -54,7 +52,6 @@ void semaforo2(void *parameter) {
       vTaskDelay(pdMS_TO_TICKS(1000));
 
       digitalWrite(amarillo2, LOW);
-
       digitalWrite(verde2, HIGH);
       vTaskDelay(pdMS_TO_TICKS(4000));
 
@@ -71,14 +68,13 @@ void semaforo2(void *parameter) {
   }
 }
 
-
-
 void setup() {
-  Serial.begin(115200);  // Inicializamos el puerto serie
-  delay(100);            // Esperamos un poco para que el Serial esté listo
+  Serial.begin(115200);  // Inicializa comunicación serie
+  delay(100);            // Espera a que Serial esté listo
 
-  semaforo = xSemaphoreCreateMutex();
+  semaforo = xSemaphoreCreateMutex();  // Crea el mutex
 
+  // Configura pines como salidas
   pinMode(verde, OUTPUT);
   pinMode(amarillo, OUTPUT);
   pinMode(rojo, OUTPUT);
@@ -86,20 +82,10 @@ void setup() {
   pinMode(amarillo2, OUTPUT);
   pinMode(rojo2, OUTPUT);
 
-  digitalWrite(rojo, HIGH);
-  digitalWrite(rojo2, HIGH);
+  digitalWrite(rojo, HIGH);   // Inicia semáforo 1 en rojo
+  digitalWrite(rojo2, HIGH);  // Inicia semáforo 2 en rojo
   delay(100);
-  /*
-  xTaskCreatePinnedToCore(
-    tarea,         // Función que ejecuta la tarea
-    "Task_Core1",  // Nombre de la tarea
-    4096,          // Tamaño del stack en palabras
-    NULL,          // Parámetro que se le pasa a la tarea
-    1,             // Prioridad de la tarea
-    NULL,          // Handle (opcional, no lo usamos aquí)
-    1              // Core donde queremos que corra la tarea (0 o 1)
-  );
-  */
+  
   xTaskCreatePinnedToCore(
     semaforo1,     // Función que ejecuta la tarea
     "Task_Core2",  // Nombre de la tarea
