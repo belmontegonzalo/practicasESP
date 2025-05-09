@@ -1,6 +1,6 @@
 #include "data.h"
 
-QueueHandle_t myQueue;    //FIFO
+QueueHandle_t myQueue;
 
 void productor(void *parameter) {
   while (1) {
@@ -17,6 +17,7 @@ void consumidor(void *parameter) {
   while (1) {
     if (xQueueReceive(myQueue, &idReceived, portMAX_DELAY) == pdPASS) {
       Person persona = getPersonById(idReceived);
+      Serial.printf("----------------------------------------------------\n");
       Serial.printf("[Consumidor] ID: %d\n", persona.id);
       Serial.printf("  NAME: %s\n", persona.name.c_str());
       Serial.printf("  LAST NAME: %s\n", persona.last_name.c_str());
