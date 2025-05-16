@@ -1,75 +1,132 @@
-
 SemaphoreHandle_t pista1;
 SemaphoreHandle_t pista2;
 
-SemaphoreHandle_t myAvion1;
-SemaphoreHandle_t myAvion2;
-SemaphoreHandle_t myAvion3;
-SemaphoreHandle_t myAvion4;
-SemaphoreHandle_t myAvion5;
-
 QueueHandle_t myQueue;
 
-void TorCon() {
-  if (xQueueReceive(myQueue, &aviones, portMAX_DELAY) == pdPASS) {
-    if (xSemaphoreTake(mySemaphore, portMAX_DELAY) == pdTRUE){
-      if (aviones == 1) {
+void TorCon(void *parameter) {
+  Serial.println("Torre de control iniciada.");
+  int Avion;
+  Serial.println("Esperando datos...");
 
+  while(1) {
+    if (xQueueReceive(myQueue, &Avion, portMAX_DELAY) == pdPASS) {
+      if (xSemaphoreTake(pista1, portMAX_DELAY) == pdTRUE){
+        if (Avion == 1) {
+          Serial.println("Avion 1 aterrizando en pista 1...");
+          vTaskDelay(pdMS_TO_TICKS(4000));
+          Serial.println("Avion 1 aterrizado en pista 1. Pista despejada.");
+        }
+        if (Avion == 2) {
+          Serial.println("Avion 2 aterrizando en pista 1...");
+          vTaskDelay(pdMS_TO_TICKS(4000));
+          Serial.println("Avion 2 aterrizado en pista 1. Pista despejada.");
+        }
+        if (Avion == 3) {
+          Serial.println("Avion 3 aterrizando en pista 1...");
+          vTaskDelay(pdMS_TO_TICKS(4000));
+          Serial.println("Avion 3 aterrizado en pista 1. Pista despejada.");
+        }
+        if (Avion == 4) {
+          Serial.println("Avion 4 aterrizando en pista 1...");
+          vTaskDelay(pdMS_TO_TICKS(4000));
+          Serial.println("Avion 4 aterrizado en pista 1. Pista despejada.");
+        }
+        if (Avion == 5) {
+          Serial.println("Avion 5 aterrizando en pista 1...");
+          vTaskDelay(pdMS_TO_TICKS(4000));
+          Serial.println("Avion 5 aterrizado en pista 1. Pista despejada.");
+        }
+        xSemaphoreGive(pista1);
       }
-      if (aviones == 2) {
+    }
+      
+    if (xQueueReceive(myQueue, &Avion, portMAX_DELAY) == pdPASS) {
+      if (xSemaphoreTake(pista2, portMAX_DELAY) == pdTRUE){
+        if (Avion == 1) {
+          Serial.println("Avion 1 aterrizando en pista 2...");
+          vTaskDelay(pdMS_TO_TICKS(4000));
+          Serial.println("Avion 1 aterrizado en pista 2. Pista despejada.");
+        }
+        if (Avion == 2) {
+          Serial.println("Avion 2 aterrizando en pista 2...");
+          vTaskDelay(pdMS_TO_TICKS(4000));
+          Serial.println("Avion 2 aterrizado en pista 2. Pista despejada.");
+        }
+        if (Avion == 3) {
+          Serial.println("Avion 3 aterrizando en pista 2...");
+          vTaskDelay(pdMS_TO_TICKS(4000));
+          Serial.println("Avion 3 aterrizado en pista 2. Pista despejada.");
+        }
+        if (Avion == 4) {
+          Serial.println("Avion 4 aterrizando en pista 2...");
+          vTaskDelay(pdMS_TO_TICKS(4000));
+          Serial.println("Avion 4 aterrizado en pista 2. Pista despejada.");
+        }
+        if (Avion == 5) {
+          Serial.println("Avion 5 aterrizando en pista 2...");
+          vTaskDelay(pdMS_TO_TICKS(4000));
+          Serial.println("Avion 5 aterrizado en pista 2. Pista despejada.");
+        }
 
-      }
-      if (aviones == 3) {
-
-      }
-      if (aviones == 4) {
-
-      }
-      if (aviones == 5) {
-
+        xSemaphoreGive(pista2);
       }
     }
   }
 }
 
-void Avion1() {
-  vTaskDelay(pdMS_TO_TICKS(random(5000,10000)));
-  int avion1 = 1;
-
-  xQueueSend(myQueue, &avion1, portMAX_DELAY);
+void Avion1(void *parameter) {
+  while(1) {
+    vTaskDelay(pdMS_TO_TICKS(random(5000,10000)));
+    int Avion = 1;
+    xQueueSend(myQueue, &Avion, portMAX_DELAY);
+    
+    Serial.println("Avion 1 pide aterrizaje.");
+  }
 }
 
-void Avion2() {
-  vTaskDelay(pdMS_TO_TICKS(random(5000,10000)));
-  int avion2 = 2;
+void Avion2(void *parameter) {
+  while(1) {
+    vTaskDelay(pdMS_TO_TICKS(random(5000,10000)));
+    int Avion = 2;
+    xQueueSend(myQueue, &Avion, portMAX_DELAY);
 
-  xQueueSend(myQueue, &avion2, portMAX_DELAY);
+    Serial.println("Avion 2 pide aterrizaje.");
+  }
 }
 
-void Avion3() {
-  vTaskDelay(pdMS_TO_TICKS(random(5000,10000)));
-  int avion3 = 3;
+void Avion3(void *parameter) {
+  while(1) {
+    vTaskDelay(pdMS_TO_TICKS(random(5000,10000)));
+    int Avion = 3;
+    xQueueSend(myQueue, &Avion, portMAX_DELAY);
 
-  xQueueSend(myQueue, &avion3, portMAX_DELAY);
+    Serial.println("Avion 3 pide aterrizaje.");
+  }
 }
 
-void Avion4() {
+void Avion4(void *parameter) {
+  while(1) {
   vTaskDelay(pdMS_TO_TICKS(random(5000,10000)));
-  int avion4 = 4;
+  int Avion = 4;
+  xQueueSend(myQueue, &Avion, portMAX_DELAY);
 
-  xQueueSend(myQueue, &avion4, portMAX_DELAY);
+  Serial.println("Avion 4 pide aterrizaje.");
+  }
 }
 
-void Avion5() {
-  vTaskDelay(pdMS_TO_TICKS(random(5000,10000)));
-  int avion5 = 5;
+void Avion5(void *parameter) {
+  while(1) {
+    vTaskDelay(pdMS_TO_TICKS(random(5000,10000)));
+    int Avion = 5;
+    xQueueSend(myQueue, &Avion, portMAX_DELAY);
 
-  xQueueSend(myQueue, &avion5, portMAX_DELAY);
+    Serial.println("Avion 5 pide aterrizaje.");
+  }
 }
 
 void setup() {
   Serial.begin(115200);
-  delay(100);
+  delay(1000);
 
   myQueue = xQueueCreate(30, sizeof(int));
 
@@ -78,14 +135,8 @@ void setup() {
   xSemaphoreGive(pista1);
   xSemaphoreGive(pista2);
 
-  xSemaphoreGive(myAvion1);
-  xSemaphoreGive(myAvion2);
-  xSemaphoreGive(myAvion3);
-  xSemaphoreGive(myAvion4);
-  xSemaphoreGive(myAvion5);
-
   xTaskCreatePinnedToCore(
-    avion1,
+    Avion1,
     "Avion1",
     4096,
     NULL,
@@ -95,7 +146,7 @@ void setup() {
   );
 
   xTaskCreatePinnedToCore(
-    avion2,
+    Avion2,
     "Avion2",
     4096,
     NULL,
@@ -105,7 +156,7 @@ void setup() {
   );
 
     xTaskCreatePinnedToCore(
-    avion3,
+    Avion3,
     "Avion3",
     4096,
     NULL,
@@ -115,7 +166,7 @@ void setup() {
   );
 
     xTaskCreatePinnedToCore(
-    avion4,
+    Avion4,
     "Avion4",
     4096,
     NULL,
@@ -125,7 +176,7 @@ void setup() {
   );
 
     xTaskCreatePinnedToCore(
-    avion5,
+    Avion5,
     "Avion5",
     4096,
     NULL,
